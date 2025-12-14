@@ -83,16 +83,7 @@
         .stat-val { font-size: 1.1rem; font-weight: bold; line-height: 1.2; }
         .stat-lbl { font-size: 0.65rem; color: #64748b; text-transform: uppercase; margin-top: 4px; }
 
-        /* TERMINAL LOG */
-        .log-box {
-            background: var(--term-bg); color: var(--term-text); 
-            font-family: 'Courier New', monospace; 
-            font-size: 0.7rem; padding: 10px; height: 120px; 
-            overflow-y: auto; border-radius: 4px; border: 1px solid #444;
-            display: flex; flex-direction: column-reverse; /* Newest at bottom */
-        }
-        .log-entry { margin-bottom: 3px; border-bottom: 1px solid #222; padding-bottom: 2px; word-wrap: break-word; }
-        .log-time { color: #555; margin-right: 5px; font-size: 0.65rem; }
+        /* TERMINAL LOG REMOVED */
 
         /* CENTER AREA */
         .center-area { 
@@ -291,11 +282,6 @@
                     <canvas id="liveChart"></canvas>
                 </div>
             </div>
-
-            <div class="panel" style="flex:1; min-height:0; display:flex; flex-direction:column;">
-                <div class="panel-title">Terminal Log</div>
-                <div class="log-box" id="log" style="height: 100%; flex:1;"></div>
-            </div>
         </aside>
     </div>
 
@@ -335,8 +321,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Security Shop is in the sidebar; no mitigation-options popups -->
 
     <script>
         const CONFIG = {
@@ -511,15 +495,7 @@
         }
         
         function log(msg) { 
-            const d = new Date();
-            const time = d.getHours() + ":" + (d.getMinutes()<10?'0':'') + d.getMinutes() + ":" + (d.getSeconds()<10?'0':'') + d.getSeconds();
-            const box = document.getElementById('log');
-            // Insert at beginning (top) so newest is visible if flex-direction is column-reverse, or append if normal
-            // Using prepend for natural reading order in a fixed box
-            const entry = document.createElement('div');
-            entry.className = 'log-entry';
-            entry.innerHTML = `<span class="log-time">[${time}]</span> ${msg}`;
-            box.insertBefore(entry, box.firstChild);
+            console.log(msg); // Logging to console instead of terminal
         }
 
         function initChart() {
@@ -906,7 +882,6 @@
             network.edges.forEach(e => { e.cut = false; e.quarantine = false; });
             ['startBtn','pauseBtn','isoBtn','recBtn','cutBtn'].forEach(id=>document.getElementById(id).disabled=true);
             document.getElementById('statusMsg').innerText = "Select Patient Zero..."; document.getElementById('statusMsg').style.color = "#bdc3c7";
-            document.getElementById('log').innerHTML = ""; // Clear log
             log("System Ready..."); 
             
             if(!hasOverride) { 
